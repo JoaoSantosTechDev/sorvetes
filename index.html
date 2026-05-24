@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gelato Fino</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #fdf6ee;
+      --brown: #3a1f0d;
+      --caramel: #c47c2b;
+      --rose: #e8a4a0;
+      --mint: #7ec8b0;
+      --text: #2a1506;
+      --muted: #8a6a50;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(58,31,13,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--brown);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--caramel); font-style: italic; }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--brown); }
+
+    .btn-nav {
+      background: var(--brown);
+      color: var(--cream) !important;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+    }
+
+    .btn-nav:hover { background: var(--caramel); color: var(--cream) !important; }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -100px;
+      top: -100px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f5d9c8 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-text { max-width: 520px; }
+
+    .badge {
+      display: inline-block;
+      background: #fdebd4;
+      color: var(--caramel);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(196,124,43,0.3);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.2rem;
+      line-height: 1.1;
+      color: var(--brown);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--caramel);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 400px;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; align-items: center; }
+
+    .btn-primary {
+      background: var(--brown);
+      color: var(--cream);
+      border: none;
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--caramel); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--brown);
+      border: 1px solid rgba(58,31,13,0.3);
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline:hover { border-color: var(--brown); background: rgba(58,31,13,0.05); }
+
+    .hero-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-img-wrap {
+      width: 420px;
+      height: 480px;
+      border-radius: 200px 200px 160px 160px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 40px;
+      left: -30px;
+      background: white;
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      border: 1px solid rgba(58,31,13,0.08);
+      box-shadow: 0 8px 32px rgba(58,31,13,0.12);
+    }
+
+    .hero-stats .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    .hero-stats .label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    .stars-float {
+      position: absolute;
+      top: 40px;
+      right: -20px;
+      background: white;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(58,31,13,0.08);
+      box-shadow: 0 8px 32px rgba(58,31,13,0.1);
+      font-size: 0.85rem;
+      color: var(--brown);
+    }
+
+    .stars-float .star-row { color: #f0a500; font-size: 0.75rem; }
+
+    section { padding: 5rem 3rem; }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--caramel);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      color: var(--brown);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 3rem;
+    }
+
+    .flavors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .flavor-card {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(58,31,13,0.08);
+      background: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .flavor-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(58,31,13,0.12); }
+
+    .flavor-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .flavor-info { padding: 1rem 1.25rem 1.25rem; }
+
+    .flavor-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--brown);
+      margin-bottom: 0.25rem;
+    }
+
+    .flavor-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.75rem; }
+
+    .flavor-footer { display: flex; align-items: center; justify-content: space-between; }
+
+    .flavor-price {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--caramel);
+    }
+
+    .btn-add {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--brown);
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .btn-add:hover { background: var(--caramel); }
+
+    .best-tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: #fdebd4;
+      color: var(--caramel);
+      padding: 2px 8px;
+      border-radius: 50px;
+      border: 1px solid rgba(196,124,43,0.3);
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .recommend-section {
+      background: var(--brown);
+      border-radius: 32px;
+      padding: 4rem;
+      margin: 0 0 5rem;
+    }
+
+    .recommend-section h2 { color: var(--cream); }
+    .recommend-section .section-label { color: var(--rose); }
+    .recommend-section .section-sub { color: rgba(253,246,238,0.6); }
+
+    .recommend-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .rec-card {
+      background: rgba(253,246,238,0.07);
+      border: 1px solid rgba(253,246,238,0.12);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .rec-card:hover { transform: translateY(-3px); }
+
+    .rec-card img { width: 100%; height: 160px; object-fit: cover; }
+
+    .rec-info { padding: 1rem 1.25rem 1.25rem; }
+
+    .rec-name {
+      font-family: 'Playfair Display', serif;
+      color: var(--cream);
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .rec-desc { font-size: 0.8rem; color: rgba(253,246,238,0.5); margin-bottom: 0.75rem; line-height: 1.5; }
+
+    .rec-price { color: var(--rose); font-size: 1.1rem; font-weight: 500; }
+
+    .order-section { background: white; border-radius: 32px; }
+
+    .order-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .order-form label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .order-form input,
+    .order-form select,
+    .order-form textarea {
+      width: 100%;
+      border: 1px solid rgba(58,31,13,0.15);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--brown);
+      background: var(--cream);
+      margin-bottom: 1.25rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .order-form input:focus,
+    .order-form select:focus,
+    .order-form textarea:focus { border-color: var(--caramel); }
+
+    .order-form textarea { height: 90px; resize: none; }
+
+    .size-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .size-opt {
+      border: 1px solid rgba(58,31,13,0.15);
+      border-radius: 12px;
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .size-opt.active {
+      border-color: var(--caramel);
+      background: #fdebd4;
+    }
+
+    .size-opt .size-name { font-size: 0.8rem; font-weight: 500; color: var(--brown); }
+    .size-opt .size-price { font-size: 0.75rem; color: var(--muted); }
+
+    .order-summary h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--brown);
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(58,31,13,0.07);
+      font-size: 0.9rem;
+    }
+
+    .summary-item:last-of-type { border-bottom: none; }
+
+    .summary-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--cream);
+      border-radius: 12px;
+    }
+
+    .summary-total .label { font-weight: 500; color: var(--brown); }
+    .summary-total .value { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--caramel); }
+
+    .reviews-section { padding: 5rem 3rem; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: white;
+      border: 1px solid rgba(58,31,13,0.08);
+      border-radius: 20px;
+      padding: 1.5rem;
+    }
+
+    .review-stars { color: #f0a500; font-size: 0.9rem; margin-bottom: 0.75rem; }
+
+    .review-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .reviewer-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .reviewer-name { font-size: 0.85rem; font-weight: 500; color: var(--brown); }
+    .reviewer-city { font-size: 0.75rem; color: var(--muted); }
+
+    footer {
+      background: var(--brown);
+      color: rgba(253,246,238,0.7);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    footer .logo { color: var(--cream); margin-bottom: 1rem; display: block; }
+
+    footer .foot-desc { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+
+    footer h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    footer ul { list-style: none; }
+
+    footer ul li { margin-bottom: 0.5rem; font-size: 0.85rem; }
+
+    footer ul a { color: rgba(253,246,238,0.6); text-decoration: none; transition: color 0.2s; }
+    footer ul a:hover { color: var(--cream); }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30,10,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--brown);
+      margin: 1rem 0 0.5rem;
+    }
+
+    .modal p { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+    .modal-close {
+      background: var(--brown);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+      .hero-img { display: none; }
+      h1 { font-size: 2.8rem; }
+      section { padding: 3rem 1.5rem; }
+      .recommend-section { padding: 2rem 1.5rem; }
+      .recommend-grid { grid-template-columns: 1fr; }
+      .order-inner { grid-template-columns: 1fr; gap: 2rem; }
+      footer { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Gelato <span>Fino</span></span>
+  <ul>
+    <li><a href="#sabores">Sabores</a></li>
+    <li><a href="#recomendacoes">Destaques</a></li>
+    <li><a href="#pedido">Pedido</a></li>
+    <li><a href="#avaliacoes">Avaliacoes</a></li>
+    <li><a href="#pedido" class="btn-nav">Pedir agora</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="badge fade-up">Artesanal desde 2014</div>
+    <h1 class="fade-up delay-1">O melhor <em>gelato</em> da cidade</h1>
+    <p class="hero-sub fade-up delay-2">Feito com frutas frescas, ingredientes naturais e muito carinho. Cada colherada e uma experiencia unica.</p>
+    <div class="hero-actions fade-up delay-3">
+      <a href="#sabores" class="btn-primary">Ver sabores</a>
+      <a href="#pedido" class="btn-outline">Fazer pedido</a>
+    </div>
+  </div>
+  <div class="hero-img">
+    <div class="hero-img-wrap">
+      <img src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=600&q=80" alt="Gelato artesanal"/>
+    </div>
+    <div class="hero-stats">
+      <div class="num">18+</div>
+      <div class="label">sabores disponíveis</div>
+    </div>
+    <div class="stars-float">
+      <div class="star-row">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div style="font-size:0.75rem; color:#8a6a50; margin-top:2px;">+2.400 avaliações</div>
+    </div>
+  </div>
+</section>
+
+<section id="sabores" style="padding-top: 2rem;">
+  <p class="section-label">cardapio</p>
+  <h2>Nossos sabores</h2>
+  <p class="section-sub">Escolha entre as nossas criações artesanais. Todos os sabores são preparados diariamente com ingredientes frescos.</p>
+
+  <div class="flavors-grid">
+    <div class="flavor-card">
+      <img class="flavor-img" src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80" alt="Morango"/>
+      <div class="flavor-info">
+        <span class="best-tag">mais pedido</span>
+        <div class="flavor-name">Morango selvagem</div>
+        <div class="flavor-desc">Morangos frescos da serra com toque de baunilha</div>
+        <div class="flavor-footer">
+          <span class="flavor-price">R$ 12,00</span>
+          <button class="btn-add" onclick="addToCart('Morango selvagem', 12)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flavor-card">
+      <img class="flavor-img" src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&q=80" alt="Chocolate"/>
+      <div class="flavor-info">
+        <div class="flavor-name">Chocolate belga</div>
+        <div class="flavor-desc">Cacau 70% com lascas de chocolate amargo</div>
+        <div class="flavor-footer">
+          <span class="flavor-price">R$ 14,00</span>
+          <button class="btn-add" onclick="addToCart('Chocolate belga', 14)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flavor-card">
+      <img class="flavor-img" src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=400&q=80" alt="Pistache"/>
+      <div class="flavor-info">
+        <span class="best-tag">exclusivo</span>
+        <div class="flavor-name">Pistache italiano</div>
+        <div class="flavor-desc">Pistache importado com creme de mascarpone</div>
+        <div class="flavor-footer">
+          <span class="flavor-price">R$ 17,00</span>
+          <button class="btn-add" onclick="addToCart('Pistache italiano', 17)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flavor-card">
+      <img class="flavor-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="Limão"/>
+      <div class="flavor-info">
+        <div class="flavor-name">Limao siciliano</div>
+        <div class="flavor-desc">Sorbet refrescante com raspas de limao e hortelã</div>
+        <div class="flavor-footer">
+          <span class="flavor-price">R$ 11,00</span>
+          <button class="btn-add" onclick="addToCart('Limao siciliano', 11)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flavor-card">
+      <img class="flavor-img" src="https://images.unsplash.com/photo-1511688878353-3a2f5be94cd7?w=400&q=80" alt="Manga"/>
+      <div class="flavor-info">
+        <div class="flavor-name">Manga com pimenta</div>
+        <div class="flavor-desc">Manga Palmer com pimenta-do-reino e gengibre</div>
+        <div class="flavor-footer">
+          <span class="flavor-price">R$ 13,00</span>
+          <button class="btn-add" onclick="addToCart('Manga com pimenta', 13)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flavor-card">
+      <img class="flavor-img" src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400&q=80" alt="Baunilha"/>
+      <div class="flavor-info">
+        <div class="flavor-name">Baunilha da Madascar</div>
+        <div class="flavor-desc">Fava de baunilha com creme de leite fresco</div>
+        <div class="flavor-footer">
+          <span class="flavor-price">R$ 12,00</span>
+          <button class="btn-add" onclick="addToCart('Baunilha da Madascar', 12)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recomendacoes" style="padding-top: 0; padding-bottom: 0;">
+  <div class="recommend-section">
+    <p class="section-label">destaques da semana</p>
+    <h2>Nossas recomendacoes</h2>
+    <p class="section-sub">Combinacoes especiais criadas pelo nosso gelater para surpreender o seu paladar.</p>
+    <div class="recommend-grid">
+      <div class="rec-card">
+        <img src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400&q=80" alt="Copa especial"/>
+        <div class="rec-info">
+          <div class="rec-name">Copa do verao</div>
+          <div class="rec-desc">Tres bolas a escolha com calda de fruta fresca e granola artesanal</div>
+          <div class="rec-price">R$ 28,00</div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" alt="Sundae"/>
+        <div class="rec-info">
+          <div class="rec-name">Sundae artesanal</div>
+          <div class="rec-desc">Chocolate belga com chantilly de baunilha e amendoim caramelizado</div>
+          <div class="rec-price">R$ 24,00</div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <img src="https://images.unsplash.com/photo-1567206563114-c179afba3834?w=400&q=80" alt="Casquinha gourmet"/>
+        <div class="rec-info">
+          <div class="rec-name">Casquinha gourmet</div>
+          <div class="rec-desc">Casquinha belga recheada com duas bolas e cobertura de chocolate branco</div>
+          <div class="rec-price">R$ 19,00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pedido">
+  <div class="order-section" style="padding: 4rem;">
+    <p class="section-label">faca seu pedido</p>
+    <h2>Montar o meu pedido</h2>
+    <p class="section-sub">Entregamos em ate 45 minutos ou retire na loja com desconto de 10%.</p>
+    <div class="order-inner">
+      <div class="order-form">
+        <label>Sabor principal</label>
+        <select>
+          <option>Morango selvagem</option>
+          <option>Chocolate belga</option>
+          <option>Pistache italiano</option>
+          <option>Limao siciliano</option>
+          <option>Manga com pimenta</option>
+          <option>Baunilha da Madascar</option>
+        </select>
+
+        <label>Segundo sabor (opcional)</label>
+        <select>
+          <option value="">-- nenhum --</option>
+          <option>Morango selvagem</option>
+          <option>Chocolate belga</option>
+          <option>Pistache italiano</option>
+          <option>Limao siciliano</option>
+          <option>Manga com pimenta</option>
+          <option>Baunilha da Madascar</option>
+        </select>
+
+        <label>Tamanho</label>
+        <div class="size-options">
+          <div class="size-opt active" onclick="selectSize(this)">
+            <div class="size-name">Pequeno</div>
+            <div class="size-price">1 bola</div>
+          </div>
+          <div class="size-opt" onclick="selectSize(this)">
+            <div class="size-name">Medio</div>
+            <div class="size-price">2 bolas</div>
+          </div>
+          <div class="size-opt" onclick="selectSize(this)">
+            <div class="size-name">Grande</div>
+            <div class="size-price">3 bolas</div>
+          </div>
+        </div>
+
+        <label>Seu nome</label>
+        <input type="text" placeholder="Como devemos chamar voce?"/>
+
+        <label>Endereco de entrega</label>
+        <input type="text" placeholder="Rua, numero, bairro"/>
+
+        <label>Observacoes</label>
+        <textarea placeholder="Alergia, preferencia de embalagem..."></textarea>
+
+        <button class="btn-primary" onclick="submitOrder()" style="width:100%; padding: 1rem; font-size: 1rem;">Confirmar pedido</button>
+      </div>
+
+      <div class="order-summary">
+        <h3>Resumo do pedido</h3>
+        <div id="cart-items">
+          <div style="text-align:center; padding: 2rem; color: var(--muted); font-size:0.9rem;">
+            Nenhum item adicionado ainda.<br/>Clique no + nos sabores acima.
+          </div>
+        </div>
+        <div class="summary-total">
+          <span class="label">Total estimado</span>
+          <span class="value" id="cart-total">R$ 0,00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-section" id="avaliacoes">
+  <p class="section-label">avaliacoes</p>
+  <h2>O que dizem nossos clientes</h2>
+  <p class="section-sub" style="margin-bottom: 2.5rem;">Mais de 2.400 pessoas ja experimentaram e aprovaram.</p>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-text">"O pistache e simplesmente o melhor sorvete que ja provei na vida. Voltei tres vezes na mesma semana, sem arrependimento."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#fdebd4; color: var(--caramel);">AM</div>
+        <div>
+          <div class="reviewer-name">Ana Maria S.</div>
+          <div class="reviewer-city">Belo Horizonte, MG</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-text">"Entrega rapida e o sorvete chegou perfeito. A casquinha gourmet e imperdivel, combina tudo muito bem."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#e8f5f0; color: var(--mint);">RP</div>
+        <div>
+          <div class="reviewer-name">Rafael P.</div>
+          <div class="reviewer-city">Contagem, MG</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-text">"Pedi a copa do verao pra minha filha e ela adorou. Ingredientes frescos, da para sentir a diferenca. Virou o sorvete favorito da familia."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#fbe8f0; color: var(--rose);">CL</div>
+        <div>
+          <div class="reviewer-name">Claudia L.</div>
+          <div class="reviewer-city">Santa Luzia, MG</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p class="review-text">"O morango selvagem e incrivel. Pena que o prazo de entrega atrasou um pouco, mas o sabor compensou tudo."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#f0ede8; color: var(--brown);">TS</div>
+        <div>
+          <div class="reviewer-name">Thiago S.</div>
+          <div class="reviewer-city">Vespasiano, MG</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-text">"Nunca pensei que manga com pimenta podia funcionar tao bem. E uma experiencia unica. Recomendo muito pra quem quer algo diferente."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#fdebd4; color: var(--caramel);">JF</div>
+        <div>
+          <div class="reviewer-name">Julia F.</div>
+          <div class="reviewer-city">Sabara, MG</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-text">"Melhor gelato artesanal que ja comi, inclusive comparando com lojas italianas. A baunilha da Madascar e absolutamente perfeita."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#e8f5f0; color: var(--mint);">MO</div>
+        <div>
+          <div class="reviewer-name">Marcos O.</div>
+          <div class="reviewer-city">Nova Lima, MG</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <span class="logo">Gelato <span>Fino</span></span>
+    <p class="foot-desc">Gelato artesanal feito com ingredientes frescos e muito carinho. Sabores criados para surpreender o seu paladar todos os dias.</p>
+  </div>
+  <div>
+    <h4>Cardapio</h4>
+    <ul>
+      <li><a href="#sabores">Sabores classicos</a></li>
+      <li><a href="#recomendacoes">Copas e sundaes</a></li>
+      <li><a href="#recomendacoes">Casquinhas</a></li>
+      <li><a href="#pedido">Encomendas</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Informacoes</h4>
+    <ul>
+      <li><a href="#">Sobre nos</a></li>
+      <li><a href="#">Ingredientes</a></li>
+      <li><a href="#">Alergenicos</a></li>
+      <li><a href="#">Franquias</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Contato</h4>
+    <ul>
+      <li><a href="#">(31) 9 9999-0000</a></li>
+      <li><a href="#">contato@gelatofino.com.br</a></li>
+      <li><a href="#">Seg–Dom: 10h–22h</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div style="font-size: 3rem;">&#127846;</div>
+    <h3>Pedido confirmado!</h3>
+    <p>Recebemos seu pedido. Em breve entraremos em contato para confirmar a entrega. Obrigado por escolher o Gelato Fino!</p>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Fechar</button>
+  </div>
+</div>
+
+<script>
+  let cart = [];
+
+  function addToCart(name, price) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, qty: 1 });
+    }
+    renderCart();
+  }
+
+  function renderCart() {
+    const el = document.getElementById('cart-items');
+    if (cart.length === 0) {
+      el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-size:0.9rem;">Nenhum item adicionado ainda.<br/>Clique no + nos sabores acima.</div>';
+      document.getElementById('cart-total').textContent = 'R$ 0,00';
+      return;
+    }
+    let total = 0;
+    el.innerHTML = cart.map(i => {
+      total += i.price * i.qty;
+      return `<div class="summary-item">
+        <span>${i.qty}x ${i.name}</span>
+        <span>R$ ${(i.price * i.qty).toFixed(2).replace('.',',')}</span>
+      </div>`;
+    }).join('');
+    document.getElementById('cart-total').textContent = 'R$ ' + total.toFixed(2).replace('.',',');
+  }
+
+  function selectSize(el) {
+    document.querySelectorAll('.size-opt').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function submitOrder() {
+    document.getElementById('modal').classList.add('open');
+    cart = [];
+    renderCart();
+  }
+</script>
+</body>
+</html>
